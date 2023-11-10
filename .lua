@@ -594,34 +594,40 @@ C1 = UIS.InputBegan:Connect(function(Input)
         if Input.KeyCode == Enum.KeyCode.B then --here you can change the letter
             Nav.Flying = not Nav.Flying
             Root.Anchored = Nav.Flying
-        elseif Input.KeyCode == Enum.KeyCode.W then
-            Nav.Forward = true
-        elseif Input.KeyCode == Enum.KeyCode.S then
-            Nav.Backward = true
-        elseif Input.KeyCode == Enum.KeyCode.A then
-            Nav.Left = true
-        elseif Input.KeyCode == Enum.KeyCode.D then
-            Nav.Right = true
         end
     end
 end)
-
+-- MouseEnter:
 Control:MouseEnter("W",1,function()
-	k
+	Nav.Forward = true
 end)
 
-C2 = UIS.InputEnded:Connect(function(Input)
-    if Input.UserInputType == Enum.UserInputType.Keyboard then
-        if Input.KeyCode == Enum.KeyCode.W then
-            Nav.Forward = false
-        elseif Input.KeyCode == Enum.KeyCode.S then
-            Nav.Backward = false
-        elseif Input.KeyCode == Enum.KeyCode.A then
-            Nav.Left = false
-        elseif Input.KeyCode == Enum.KeyCode.D then
-            Nav.Right = false
-        end
-    end
+Control:MouseEnter("S",2,function()
+	Nav.Backward = true
+end)
+
+Control:MouseEnter("A",3,function()
+	Nav.Left = true
+end)
+
+Control:MouseEnter("D",4,function()
+	Nav.Right = true
+end)
+-- MouseLeave:
+Control:MouseLeave("W",1,function()
+	Nav.Forward = false
+end)
+
+Control:MouseLeave("S",2,function()
+	Nav.Backward = false
+end)
+
+Control:MouseLeave("A",3,function()
+	Nav.Left = false
+end)
+
+Control:MouseLeave("D",4,function()
+	Nav.Right = false
 end)
 
 C3 = Camera:GetPropertyChangedSignal("CFrame"):Connect(function()
