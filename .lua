@@ -558,7 +558,6 @@ PLAYERSection:AddButton({
 Name = "Fly! (B) (Mobile Version)",
 Callback = function()
     local Speed = 60
-Control:Active()
 
 if not RootAnchorBypassed then
     getgenv().RootAnchorBypassed = true
@@ -592,6 +591,7 @@ local Nav = {Flying = false, Forward = false, Backward = false, Left = false, Ri
 C1 = UIS.InputBegan:Connect(function(Input)
     if Input.UserInputType == Enum.UserInputType.Keyboard then
         if Input.KeyCode == Enum.KeyCode.B then --here you can change the letter
+	    Control:Active()
             Nav.Flying = not Nav.Flying
             Root.Anchored = Nav.Flying
         end
@@ -771,4 +771,10 @@ Player.CharacterAdded:Connect(function(Vo)
         return __oldindex(self, Key)
     end)
     setreadonly(GameMT, true)
+end})
+
+FARMSection:AddButton({
+Name = "Immortal",
+Callback = function()
+	Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(11)
 end})
