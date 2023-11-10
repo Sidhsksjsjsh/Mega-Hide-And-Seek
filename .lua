@@ -558,7 +558,7 @@ PLAYERSection:AddButton({
 Name = "Fly! (B) (Mobile Version)",
 Callback = function()
     local Speed = 60
-
+Control:Active()
 
 if not RootAnchorBypassed then
     getgenv().RootAnchorBypassed = true
