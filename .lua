@@ -1,4 +1,9 @@
----Ui
+--[[Ui
+Control:MouseEnter(name,gui,func)
+Control:MouseLeave(name,gui,func)
+]]
+
+local Control = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sidhsksjsjsh/Controller-For-Mobile/main/.lua"))()
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/NMEHkVTb"))()
 local Window = OrionLib:MakeWindow({Name = "VIP Turtle Hub V3", HidePremium = false, SaveConfig = false, ConfigFolder = "TurtleFi"})
 local custom_theme = {}
@@ -501,6 +506,108 @@ C1 = UIS.InputBegan:Connect(function(Input)
             Nav.Right = true
         end
     end
+end)
+
+C2 = UIS.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.Keyboard then
+        if Input.KeyCode == Enum.KeyCode.W then
+            Nav.Forward = false
+        elseif Input.KeyCode == Enum.KeyCode.S then
+            Nav.Backward = false
+        elseif Input.KeyCode == Enum.KeyCode.A then
+            Nav.Left = false
+        elseif Input.KeyCode == Enum.KeyCode.D then
+            Nav.Right = false
+        end
+    end
+end)
+
+C3 = Camera:GetPropertyChangedSignal("CFrame"):Connect(function()
+    if Nav.Flying then
+        Root.CFrame = CFrame.new(Root.CFrame.Position, Root.CFrame.Position + Camera.CFrame.LookVector)
+    end
+end)
+
+while true do -- not EndAll
+    local Delta = OnRender:Wait()
+    if Nav.Flying then
+        if Nav.Forward then
+            Root.CFrame = Root.CFrame + (Camera.CFrame.LookVector * (Delta * Speed))
+        end
+        if Nav.Backward then
+            Root.CFrame = Root.CFrame + (-Camera.CFrame.LookVector * (Delta * Speed))
+        end
+        if Nav.Left then
+            Root.CFrame = Root.CFrame + (-Camera.CFrame.RightVector * (Delta * Speed))
+        end
+        if Nav.Right then
+            Root.CFrame = Root.CFrame + (Camera.CFrame.RightVector * (Delta * Speed))
+        end
+    end
+end
+
+--[[C1:Disconnect()
+C2:Disconnect()
+C3:Disconnect()
+if Nav.Flying then
+    Root.Anchored = false
+end]]
+end})
+
+PLAYERSection:AddButton({
+Name = "Fly! (B) (Mobile Version)",
+Callback = function()
+    local Speed = 60
+
+
+if not RootAnchorBypassed then
+    getgenv().RootAnchorBypassed = true
+    Player.CharacterAdded:Connect(function(C)
+        Root = C:WaitForChild("HumanoidRootPart")
+        wait(0.5)
+        for _, C in pairs(getconnections(Root:GetPropertyChangedSignal("Anchored"))) do C:Disable() end
+    end)
+    
+    local GameMT = getrawmetatable(game)
+    local __oldindex = GameMT.__index
+    setreadonly(GameMT, false)
+    GameMT.__index = newcclosure(function(self, Key)
+        if self == Root and Key == "Anchored" then return false end
+        return __oldindex(self, Key)
+    end)
+    setreadonly(GameMT, true)
+end
+
+local UIS = game:GetService("UserInputService")
+local OnRender = game:GetService("RunService").RenderStepped
+
+local Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+
+local Camera = workspace.CurrentCamera
+local Root = Character:WaitForChild("HumanoidRootPart")
+
+local C1, C2, C3;
+local Nav = {Flying = false, Forward = false, Backward = false, Left = false, Right = false}
+C1 = UIS.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.Keyboard then
+        if Input.KeyCode == Enum.KeyCode.B then --here you can change the letter
+            Nav.Flying = not Nav.Flying
+            Root.Anchored = Nav.Flying
+        elseif Input.KeyCode == Enum.KeyCode.W then
+            Nav.Forward = true
+        elseif Input.KeyCode == Enum.KeyCode.S then
+            Nav.Backward = true
+        elseif Input.KeyCode == Enum.KeyCode.A then
+            Nav.Left = true
+        elseif Input.KeyCode == Enum.KeyCode.D then
+            Nav.Right = true
+        end
+    end
+end)
+
+Control:MouseEnter("W",1,function()
+	k
 end)
 
 C2 = UIS.InputEnded:Connect(function(Input)
